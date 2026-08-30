@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RailDrishti — Real-Time Rail Intelligence Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#f8fafc",
+                      "primary-fixed": "#7dd3fc",
+                      "inverse-on-surface": "#0f172a",
+                      "tertiary-fixed": "#c084fc",
+                      "surface-container-low": "#0f172a",
+                      "secondary-fixed-dim": "#94a3b8",
+                      "on-surface-variant": "#94a3b8",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#1e293b",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#4c1d95",
+                      "surface-bright": "#334155",
+                      "surface-variant": "#1e293b",
+                      "surface-container-lowest": "#020617",
+                      "error-container": "#7f1d1d",
+                      "surface": "#020617",
+                      "tertiary": "#a855f7",
+                      "on-primary-fixed": "#0c4a6e",
+                      "surface-dim": "#0f172a",
+                      "secondary-container": "#334155",
+                      "outline": "#475569",
+                      "on-surface": "#f8fafc",
+                      "on-primary-container": "#e0f2fe",
+                      "primary-fixed-dim": "#38bdf8",
+                      "outline-variant": "#334155",
+                      "on-secondary-fixed-variant": "#334155",
+                      "on-tertiary-container": "#f3e8ff",
+                      "surface-container-highest": "#334155",
+                      "primary": "#0ea5e9",
+                      "surface-container": "#0f172a",
+                      "background": "#020617",
+                      "tertiary-fixed-dim": "#a855f7",
+                      "on-primary-fixed-variant": "#0284c7",
+                      "inverse-surface": "#f8fafc",
+                      "on-secondary-fixed": "#0f172a",
+                      "on-secondary-container": "#f8fafc",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#fecaca",
+                      "secondary": "#64748b",
+                      "error": "#ef4444",
+                      "primary-container": "#0369a1",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed": "#3b0764",
+                      "secondary-fixed": "#e2e8f0",
+                      "tertiary-container": "#7e22ce",
+                      "inverse-primary": "#0284c7",
+                      "surface-tint": "#0ea5e9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.375rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "md": "8px",
+                      "sm": "6px",
+                      "gutter": "8px",
+                      "lg": "12px",
+                      "xl": "16px",
+                      "base": "2px",
+                      "container-margin": "12px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter", "sans-serif"],
+                      "label-md": ["JetBrains Mono", "monospace"],
+                      "headline-md": ["Barlow Condensed", "sans-serif"],
+                      "body-md": ["Inter", "sans-serif"],
+                      "headline-lg": ["Barlow Condensed", "sans-serif"],
+                      "headline-lg-mobile": ["Barlow Condensed", "sans-serif"],
+                      "display-lg": ["Barlow Condensed", "sans-serif"],
+                      "title-lg": ["Barlow Condensed", "sans-serif"],
+                      "mono": ["JetBrains Mono", "monospace"]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "28px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "22px",
+                              {
+                                      "lineHeight": "26px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "36px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "title-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        /* Pulse Animation */
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        .animate-pulse-ring::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: inherit;
+            border-radius: inherit;
+            z-index: -1;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        /* Hide scrollbar for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .glass-panel {
+            background-color: rgba(15, 23, 42, 0.85); /* Slate 900 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(71, 85, 105, 0.4); /* Slate 600 */
+        }
+        
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+        }
+        
+        .grid-overlay {
+            background-image: 
+                linear-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-hidden font-body-lg antialiased selection:bg-primary-container selection:text-on-primary-container">
+<div id="app-container" class="@container w-full h-full relative transition-all duration-500 ease-in-out">
+
+<!-- Mock Map Background Image representing MapLibre -->
+<div class="fixed inset-0 w-full h-full z-0 pointer-events-none grid-overlay" data-alt="A highly detailed, dark mode stylized digital map interface showing a complex railway network. The map background is very dark zinc or almost black, with subtle lighter gray lines representing roads and borders. The prominent features are sharp, vibrant amber and bright blue lines tracing train routes, some fading out softly to indicate historical path. The aesthetic is extremely modern, technical, and professional, resembling a high-end command center or intelligence dashboard map overlay." style="background-color: #020617; background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA63TT2QbBhl-1tcsxy_UUFGhxtCrSR4QAq6EcgoHJQfyWdFZr9poMo1-YYVOMV-BKqQKYB8nfJudNL0f95_GA4e5qs4NLjcL0GoB3TbGXtm0zh8OdS4HxyXJm0M0zSWErRUGMDZnyEyBl9sGXTLZOHKtGoBrwRQCE9wvookCzqwyqUUWCUczsbllx-FzXzZUF5NJUTMdzLpFwx0SgCItqB1fZnUfYZ2-833BCCFdzsJnf3NXcpgio'); background-size: cover; background-position: center; background-blend-mode: overlay;">
+<div class="absolute inset-0 scanlines pointer-events-none opacity-50 z-0"></div>
+<!-- Mock Map Overlays -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80 z-0 pointer-events-none"></div>
+<!-- Mock Map Markers & Trails -->
+<svg class="absolute inset-0 w-full h-full z-0" xmlns="http://www.w3.org/2000/svg">
+<path d="M 400 600 Q 450 500, 500 450 T 600 300" fill="none" opacity="0.8" stroke="#0ea5e9" stroke-dasharray="8 4" stroke-width="3"></path>
+<path d="M 600 300 L 650 200 L 700 150" fill="none" opacity="0.4" stroke="#475569" stroke-dasharray="4 2" stroke-width="2"></path>
+</svg>
+<!-- Live Train Marker -->
+<div class="absolute top-[300px] left-[600px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+<div class="bg-surface-container-high px-2 py-1 rounded-sm mb-1 shadow-lg border border-primary/50 flex items-center gap-1 font-mono text-label-md text-on-surface">
+<span class="material-symbols-outlined text-[12px] text-primary">speed</span>
+                78 km/h
+            </div>
+<div class="w-3 h-3 bg-primary rounded-full relative animate-pulse-ring shadow-[0_0_15px_rgba(14,165,233,0.8)] border-2 border-surface"></div>
+</div>
+</div>
+<!-- Top Navigation App Bar -->
+<header class="fixed top-2 left-2 right-2 z-50 flex justify-between items-center max-w-7xl mx-auto rounded-lg px-3 py-1.5 shadow-lg border border-outline-variant bg-surface-container-low/90 backdrop-blur-md transition-all duration-300">
+<!-- Brand -->
+<div class="flex items-center gap-2">
+<img alt="RailDrishti Logo" class="w-6 h-6 rounded-md object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XGPPm4RkRgJv9DXJoycwGkYzgdoyHhi1jiXAyrNdwRDr240gMeTtsmdhdwJk-YjWZpkO_3-Dkm_D3ieLvO7yLeBuR5nbscDOOCNWyky6aQULHv8yLMs2lGTT2VGyKhdhqKMcY5D1tvLW3PNb-k6iGRYilficN3eIvqDwA7ym78jintA2AYHIg7eYubSiufsvKPiAq6_0uj6IZCAb0eeT9LeYTtG_Pijk4wTNlYRiDWofOusbKKhaeeDw"/>
+<span class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight uppercase">RailDrishti</span>
+</div>
+<!-- PNR Search (Desktop Center) -->
+<div class="hidden @md:flex flex-1 max-w-md mx-6">
+<div class="relative w-full group">
+<div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors text-[18px]">search</span>
+</div>
+<input class="w-full bg-surface border border-outline-variant rounded-sm py-1 pl-8 pr-3 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all font-mono text-body-md shadow-inner h-8" pattern="\d{10}" placeholder="Enter 10-digit PNR..." type="text"/>
+<button class="absolute inset-y-1 right-1 bg-surface-variant hover:bg-surface-bright text-on-surface-variant rounded-sm px-2 py-0.5 font-label-md text-label-md transition-colors border border-outline-variant flex items-center gap-1 h-6">
+                    Track
+                    <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Trailing Actions / Status -->
+<div class="flex items-center gap-3">
+<button class="@md:hidden p-1.5 text-on-surface-variant hover:text-primary transition-colors rounded hover:bg-surface-variant/50">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<div class="flex items-center gap-1.5 bg-[#451a03] text-[#fbbf24] px-2 py-1 rounded-sm border border-[#fbbf24]/30 backdrop-blur-sm animate-pulse-soft">
+<div class="w-1.5 h-1.5 rounded-full bg-[#fbbf24]"></div>
+<span class="font-mono text-label-md uppercase tracking-wider font-bold">Delayed · 12 Min</span>
+</div>
+<button class="p-0.5 rounded-sm border border-outline-variant overflow-hidden hover:opacity-80 transition-opacity">
+<img class="w-6 h-6 rounded-sm object-cover" data-alt="A professional headshot of a user or executive, set against a dark, minimalist background. The lighting is soft and flattering, creating a premium feel. The image is cropped in a perfect circle, serving as an avatar for a high-end application interface. The subject has a neutral, confident expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCepZItEjvVf21HFlfx4HQwt1nOMhBTzy7pdErb8LlQO3eHyxdBVi2_M4sepHFxX98bbEtGSNHWvFUXiSS9zpOFM-M6RTRI2d--_JhMkGQcAi1YLhfkT0r4vdi18LqBjwEoEmfrwWa07-CAcEZUvxJVLQEbmuTNt9cmXwmO5iG69jUtExL9sMxoL9XCPihyfMEUYWewx9WhFKanJLB_MlakxNL_LCRd3lInH2-dQwIL9bGR-XZIdV8"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative z-10 w-full h-screen pt-16 px-2 pb-20 pointer-events-none flex flex-col @md:flex-row gap-2 max-w-7xl mx-auto">
+<!-- Left Panel: Live Intelligence Dashboard -->
+<div class="pointer-events-auto w-full @md:w-[360px] h-full flex flex-col gap-2 overflow-hidden">
+<!-- Primary Train Card -->
+<div class="glass-panel rounded-lg overflow-hidden shadow-2xl flex-shrink-0 transition-all border-l-4 border-l-primary">
+<div class="p-md relative overflow-hidden">
+<!-- Decor background -->
+<div class="absolute -right-8 -top-8 text-[100px] text-surface-container-high/40 material-symbols-outlined z-0 font-light select-none pointer-events-none" style="font-variation-settings: 'FILL' 1;">train</div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h1 class="font-headline-lg-mobile @md:font-headline-lg text-headline-lg-mobile @md:text-headline-lg text-on-surface mb-0.5 uppercase tracking-wide">Mumbai Rajdhani</h1>
+<div class="flex items-center gap-2 text-on-surface-variant font-mono text-body-md">
+<span class="bg-surface-variant px-1.5 py-0.5 rounded-sm text-secondary-fixed border border-outline-variant/50">12951</span>
+<span class="text-primary/50">•</span>
+<span>NDLS → MMCT</span>
+</div>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-2 mb-3">
+<div class="bg-surface-container p-2 border border-outline-variant/50 rounded-sm">
+<span class="font-mono text-label-md text-on-surface-variant block mb-0.5 uppercase">Current Speed</span>
+<div class="flex items-baseline gap-1 text-primary">
+<span class="font-mono text-title-lg font-bold">78</span>
+<span class="font-mono text-label-md">km/h</span>
+</div>
+</div>
+<div class="bg-[#451a03] p-2 border border-[#fbbf24]/30 rounded-sm">
+<span class="font-mono text-label-md text-[#fbbf24]/80 block mb-0.5 uppercase">Status</span>
+<div class="flex items-baseline gap-1 text-[#fbbf24]">
+<span class="font-mono text-title-lg font-bold">12</span>
+<span class="font-mono text-label-md">min late</span>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full">
+<div class="flex justify-between font-mono text-label-md text-on-surface-variant mb-1">
+<span>New Delhi</span>
+<span>Mumbai Central</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden relative">
+<div class="absolute left-0 top-0 h-full bg-primary rounded-full" style="width: 65%;"></div>
+<div class="absolute top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full border-2 border-primary shadow-[0_0_8px_rgba(14,165,233,0.8)]" style="left: 65%; transform: translate(-50%, -50%);"></div>
+</div>
+<div class="flex justify-between font-mono text-label-md text-on-surface-variant mt-1 opacity-60 text-[9px]">
+<span>16:55 (Yesterday)</span>
+<span>08:35 (Today)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Station Timeline List -->
+<div class="glass-panel rounded-lg flex-grow overflow-hidden flex flex-col shadow-2xl relative border-t border-outline-variant/30">
+<!-- STICKY NEXT STATION -->
+<div class="sticky top-0 z-20 bg-surface-container-high/95 backdrop-blur-sm border-b border-primary/30 p-2 shadow-md">
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center gap-2">
+<span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded-sm text-[9px] font-mono font-bold tracking-wide uppercase border border-primary/30 animate-pulse-soft">Next</span>
+<h3 class="font-body-lg text-body-lg text-on-surface font-bold">Bhopal Jn <span class="text-on-surface-variant text-xs font-mono ml-1 text-on-surface-variant">(BPL)</span></h3>
+</div>
+<span class="font-mono text-label-md text-on-surface flex items-center gap-1">11:45 AM <span class="text-[#fbbf24] text-[10px]">(+12m)</span></span>
+</div>
+<div class="flex justify-between text-on-surface-variant font-mono text-label-md">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">door_open</span>Exp PF 2</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">timer</span>5m Halt</span>
+<span class="flex items-center gap-1 text-primary-fixed-dim"><span class="material-symbols-outlined text-[12px]">groups</span>Mod. Crowd</span>
+</div>
+</div>
+<div class="px-md py-sm border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low">
+<h2 class="font-title-lg text-body-lg text-on-surface flex items-center gap-1.5 uppercase tracking-wide">
+<span class="material-symbols-outlined text-primary text-[18px]">timeline</span>
+                        Route Intelligence
+                    </h2>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+</div>
+<div class="overflow-y-auto no-scrollbar p-md flex flex-col gap-2 relative">
+<!-- Vertical tracking line -->
+<div class="absolute left-[23px] top-md bottom-md w-px bg-outline-variant z-0"></div>
+<div class="absolute left-[23px] top-md h-[40%] w-px bg-primary z-0 shadow-[0_0_5px_rgba(14,165,233,0.5)]"></div>
+<!-- Station Item: Passed (Done) -->
+<div class="relative z-10 flex gap-2 group opacity-50 hover:opacity-100 transition-opacity">
+<div class="w-6 flex flex-col items-center shrink-0 pt-1">
+<div class="w-3 h-3 rounded-full bg-surface-container border border-primary flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[8px] text-primary" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<div class="flex-1 bg-surface-container rounded-sm p-1.5 border border-outline-variant/20">
+<div class="flex justify-between items-center mb-0.5">
+<h3 class="font-body-md text-body-md text-on-surface">Itarsi Jn <span class="text-on-surface-variant text-[10px] font-mono ml-1">(ET)</span></h3>
+<span class="font-mono text-[9px] text-on-surface-variant uppercase">Arrived</span>
+</div>
+<div class="flex gap-3 text-on-surface-variant font-mono text-[10px]">
+<span class="flex items-center gap-0.5"><span class="material-symbols-outlined text-[10px]">schedule</span>10:20 AM</span>
+<span class="flex items-center gap-0.5"><span class="material-symbols-outlined text-[10px]">door_open</span>PF 3</span>
+</div>
+</div>
+</div>
+<!-- Active Station Marker (Empty spot in timeline since it's sticky now) -->
+<div class="relative z-10 flex gap-2 group py-1">
+<div class="w-6 flex flex-col items-center shrink-0">
+<div class="w-3 h-3 rounded-full bg-surface border-2 border-primary z-10 shadow-[0_0_8px_rgba(14,165,233,0.6)]"></div>
+</div>
+<div class="flex-1 h-px bg-primary/30 mt-1.5 dashed"></div>
+</div>
+<!-- Station Item: Upcoming -->
+<div class="relative z-10 flex gap-2 group opacity-80 hover:opacity-100 transition-opacity">
+<div class="w-6 flex flex-col items-center shrink-0 pt-1">
+<div class="w-2 h-2 rounded-full bg-surface-container border border-outline-variant z-10"></div>
+</div>
+<div class="flex-1 bg-surface-container-lowest rounded-sm p-1.5 border border-outline-variant/20 hover:border-outline-variant transition-colors">
+<div class="flex justify-between items-center mb-0.5">
+<h3 class="font-body-md text-body-md text-on-surface">Bina Jn <span class="text-on-surface-variant text-[10px] font-mono ml-1">(BINA)</span></h3>
+<span class="font-mono text-[10px] text-on-surface-variant">12:30 PM</span>
+</div>
+<div class="flex gap-3 text-on-surface-variant font-mono text-[10px]">
+<span class="flex items-center gap-0.5"><span class="material-symbols-outlined text-[10px]">door_open</span>PF 1</span>
+<span class="flex items-center gap-0.5"><span class="material-symbols-outlined text-[10px]">timer</span>2m Halt</span>
+</div>
+</div>
+</div>
+<!-- Station Item: Upcoming -->
+<div class="relative z-10 flex gap-2 group opacity-60 hover:opacity-100 transition-opacity">
+<div class="w-6 flex flex-col items-center shrink-0 pt-1">
+<div class="w-2 h-2 rounded-full bg-surface-container border border-outline-variant z-10"></div>
+</div>
+<div class="flex-1 bg-surface-container-lowest rounded-sm p-1.5 border border-outline-variant/20">
+<div class="flex justify-between items-center mb-0.5">
+<h3 class="font-body-md text-body-md text-on-surface">Jhansi Jn <span class="text-on-surface-variant text-[10px] font-mono ml-1">(JHS)</span></h3>
+<span class="font-mono text-[10px] text-on-surface-variant">14:15 PM</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side / Floating Widgets (Desktop) -->
+<div class="hidden @md:flex flex-col gap-2 pointer-events-auto items-end ml-auto mt-2">
+<!-- PNR Result Card Example -->
+<div class="glass-panel w-64 rounded-lg p-3 shadow-xl border border-outline-variant/40 hover:border-primary/40 transition-all group border-t-2 border-t-primary">
+<div class="flex justify-between items-center mb-2 border-b border-outline-variant/30 pb-1.5">
+<span class="font-mono text-label-md text-on-surface-variant">PNR 8321456789</span>
+<span class="bg-primary/10 text-primary px-1.5 py-0.5 rounded-sm text-[9px] font-mono font-bold uppercase tracking-wider">Confirmed</span>
+</div>
+<div class="mb-2">
+<h4 class="font-body-md text-body-md text-on-surface mb-1">Passenger A</h4>
+<div class="flex gap-2">
+<div class="bg-surface-container-high px-1.5 py-1 rounded-sm border border-outline-variant/50 flex-1 text-center">
+<span class="font-mono text-[9px] text-on-surface-variant block uppercase">Coach</span>
+<span class="font-mono text-body-lg text-primary font-bold">B3</span>
+</div>
+<div class="bg-surface-container-high px-1.5 py-1 rounded-sm border border-outline-variant/50 flex-1 text-center">
+<span class="font-mono text-[9px] text-on-surface-variant block uppercase">Berth</span>
+<span class="font-mono text-body-lg text-primary font-bold">45</span>
+</div>
+<div class="bg-surface-container-high px-1.5 py-1 rounded-sm border border-outline-variant/50 flex-1 text-center">
+<span class="font-mono text-[9px] text-on-surface-variant block uppercase">Type</span>
+<span class="font-mono text-body-lg text-on-surface font-bold">UB</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-surface-variant hover:bg-surface-bright text-on-surface py-1.5 rounded-sm font-mono text-label-md transition-colors flex items-center justify-center gap-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-[14px]">qr_code_scanner</span>
+                    View Ticket
+                </button>
+</div>
+<!-- Map Controls -->
+<div class="flex flex-col gap-1.5 mt-auto">
+<button class="bg-surface-container/95 backdrop-blur-md border border-outline-variant/40 p-1.5 rounded-sm text-on-surface hover:text-primary hover:bg-surface-variant transition-colors shadow-lg">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+<button class="bg-surface-container/95 backdrop-blur-md border border-outline-variant/40 p-1.5 rounded-sm text-on-surface hover:text-primary hover:bg-surface-variant transition-colors shadow-lg">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+<div class="bg-surface-container/95 backdrop-blur-md border border-outline-variant/40 rounded-sm shadow-lg flex flex-col overflow-hidden mt-1">
+<button class="p-1.5 text-on-surface hover:text-primary hover:bg-surface-variant transition-colors border-b border-outline-variant/40">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<button class="p-1.5 text-on-surface hover:text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only - Now visible everywhere) -->
+<nav class="@md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center px-2 pb-4 pt-2 bg-surface-container/95 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] border-t border-outline-variant/40 max-w-7xl mx-auto left-0 right-0">
+<!-- Live Map (Active) -->
+<button class="flex flex-col items-center justify-center bg-primary/10 text-primary rounded-md px-3 py-1 hover:text-primary-fixed transition-all scale-95 duration-150 group border border-primary/20">
+<span class="material-symbols-outlined mb-0.5 text-[20px]" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-mono text-[10px] uppercase">Live Map</span>
+</button>
+<!-- PNR Status -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined mb-0.5 text-[20px] group-hover:scale-110 transition-transform">confirmation_number</span>
+<span class="font-mono text-[10px] uppercase">PNR Status</span>
+</button>
+<!-- Schedule -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined mb-0.5 text-[20px] group-hover:scale-110 transition-transform">schedule</span>
+<span class="font-mono text-[10px] uppercase">Schedule</span>
+</button>
+<!-- Alerts -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-[#fbbf24] transition-all group relative">
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-[#fbbf24] rounded-full shadow-[0_0_5px_#fbbf24]"></span>
+<span class="material-symbols-outlined mb-0.5 text-[20px] group-hover:scale-110 transition-transform">notifications</span>
+<span class="font-mono text-[10px] uppercase">Alerts</span>
+</button>
+</nav>
+<!-- Floating Action Button (Mobile Map Target) -->
+<button class="@md:hidden fixed bottom-20 right-3 z-40 bg-surface text-primary p-3 rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center justify-center hover:bg-surface-variant transition-colors border border-outline-variant">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+
+</div>
+
+    <button id="mode-toggle" onclick="toggleMode()" class="fixed top-4 right-4 z-[9999] bg-surface-container-high border border-outline-variant text-on-surface px-4 py-2 rounded-full shadow-xl font-mono text-label-md hover:bg-surface-variant transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-[18px]" id="mode-icon">phone_iphone</span>
+        <span id="mode-text">Mobile Mode</span>
+    </button>
+    
+    <script>
+        let isMobileMode = false;
+        function toggleMode() {
+            isMobileMode = !isMobileMode;
+            const container = document.getElementById('app-container');
+            const body = document.body;
+            const text = document.getElementById('mode-text');
+            const icon = document.getElementById('mode-icon');
+            
+            if (isMobileMode) {
+                // Switch to Mobile Mode
+                body.classList.add('flex', 'items-center', 'justify-center', 'bg-black');
+                container.className = '@container w-[390px] h-[844px] overflow-hidden rounded-[40px] border-[12px] border-surface shadow-2xl relative transition-all duration-500 ease-in-out flex-shrink-0 mt-8';
+                
+                text.innerText = 'Desktop Mode';
+                icon.innerText = 'desktop_windows';
+            } else {
+                // Switch to Desktop Mode
+                body.classList.remove('flex', 'items-center', 'justify-center', 'bg-black');
+                container.className = '@container w-full h-full relative transition-all duration-500 ease-in-out';
+                
+                text.innerText = 'Mobile Mode';
+                icon.innerText = 'phone_iphone';
+            }
+        }
+    </script>
+    </body></html>
