@@ -489,64 +489,96 @@
 </button>
 </nav>
 
-<!-- Search Page View -->
-<main id="search-view" class="hidden relative z-20 w-full h-screen pt-24 px-6 pb-28 overflow-y-auto bg-background/95 backdrop-blur-xl">
-    <div class="max-w-2xl mx-auto w-full flex flex-col gap-8 h-full justify-center pointer-events-auto">
-        <div class="text-center mb-4">
-            <h1 class="font-headline-lg text-[40px] text-on-surface mb-2 tracking-tight">Where to?</h1>
-            <p class="font-body-lg text-on-surface-variant">Search by stations or train number to start tracking.</p>
+<!-- Home Page View (Search) -->
+<main id="search-view" class="hidden relative z-20 w-full h-screen overflow-y-auto bg-background">
+    <!-- Hero Background Graphic -->
+    <div class="absolute inset-0 z-0 pointer-events-none grid-overlay opacity-30"></div>
+    <div class="absolute top-0 w-full h-96 bg-gradient-to-b from-primary/10 to-transparent z-0 pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto w-full flex flex-col gap-8 min-h-full py-12 px-4 md:px-8 relative z-10 pt-24 pb-28">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-2">
+            <h1 class="font-headline-lg text-[48px] md:text-[64px] text-on-surface mb-2 tracking-tight uppercase">Welcome to RailDrishti</h1>
+            <p class="font-body-lg text-on-surface-variant text-lg md:text-xl max-w-2xl mx-auto">Real-time rail intelligence and seamless journey tracking at your fingertips.</p>
         </div>
         
-        <!-- Station Search -->
-        <div class="glass-panel p-6 rounded-xl shadow-2xl flex flex-col gap-4 relative">
-            <div class="absolute left-10 top-12 bottom-12 w-0.5 bg-outline-variant/50 border-l border-dashed border-outline-variant z-0"></div>
-            
-            <div class="relative z-10 flex items-center gap-4">
-                <div class="w-4 h-4 rounded-full border-[3px] border-primary bg-surface shadow-[0_0_10px_rgba(17,100,255,0.4)]"></div>
-                <div class="flex-1">
-                    <label class="block font-mono text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">Initial Station</label>
-                    <input type="text" placeholder="e.g. New Delhi (NDLS)" class="w-full bg-surface-container border border-outline-variant rounded-md py-3 px-4 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-lg shadow-inner text-[16px]">
-                </div>
+        <!-- Command Card (Tabbed Search) -->
+        <div class="glass-panel rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/50 max-w-2xl mx-auto w-full backdrop-blur-xl bg-surface-container-low/80">
+            <!-- Tabs -->
+            <div class="flex border-b border-outline-variant/30">
+                <button onclick="switchSearchTab('train')" id="tab-train" class="flex-1 py-4 font-headline-md text-[18px] text-primary border-b-2 border-primary uppercase tracking-wide bg-primary/5 transition-colors">
+                    Track Train
+                </button>
+                <button onclick="switchSearchTab('station')" id="tab-station" class="flex-1 py-4 font-headline-md text-[18px] text-on-surface-variant border-b-2 border-transparent uppercase tracking-wide hover:text-on-surface transition-colors">
+                    Find Route
+                </button>
             </div>
             
-            <button class="absolute right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-surface-variant border border-outline-variant rounded-full flex items-center justify-center text-on-surface hover:text-primary hover:border-primary transition-colors shadow-md">
-                <span class="material-symbols-outlined text-[20px]">swap_vert</span>
-            </button>
-            
-            <div class="relative z-10 flex items-center gap-4 mt-2">
-                <div class="w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_rgba(17,100,255,0.6)] flex items-center justify-center">
-                    <div class="w-1.5 h-1.5 bg-surface rounded-full"></div>
-                </div>
-                <div class="flex-1">
-                    <label class="block font-mono text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">Final Station</label>
-                    <input type="text" placeholder="e.g. Mumbai Central (MMCT)" class="w-full bg-surface-container border border-outline-variant rounded-md py-3 px-4 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-lg shadow-inner text-[16px]">
-                </div>
-            </div>
-            
-            <button class="mt-4 w-full bg-primary hover:bg-primary-fixed-dim text-on-primary py-3.5 rounded-md font-mono text-[14px] font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/30">
-                <span class="material-symbols-outlined text-[20px]">search</span>
-                Find Trains
-            </button>
-        </div>
-        
-        <div class="flex items-center gap-4 my-2">
-            <div class="flex-1 h-px bg-outline-variant/50"></div>
-            <span class="font-mono text-label-md text-on-surface-variant uppercase">Or</span>
-            <div class="flex-1 h-px bg-outline-variant/50"></div>
-        </div>
-        
-        <!-- Train Number Search -->
-        <div class="glass-panel p-6 rounded-xl shadow-xl">
-            <label class="block font-mono text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Search by Train Number</label>
-            <div class="flex gap-3">
-                <div class="relative flex-1">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <span class="material-symbols-outlined text-outline text-[20px]">train</span>
+            <div class="p-6 md:p-8">
+                <!-- Train Search Content -->
+                <div id="content-train" class="flex flex-col gap-6">
+                    <div>
+                        <label class="block font-mono text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Search by Train Number</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-outline text-[24px]">train</span>
+                            </div>
+                            <input type="text" placeholder="Enter 5-digit train number (e.g. 12951)" class="w-full bg-surface-container border border-outline-variant rounded-lg py-4 pl-12 pr-4 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-mono text-[18px] shadow-inner">
+                        </div>
                     </div>
-                    <input type="text" placeholder="Enter 5-digit train number" class="w-full bg-surface-container border border-outline-variant rounded-md py-3 pl-12 pr-4 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-mono text-[16px] shadow-inner h-full">
+                    
+                    <button class="w-full bg-primary hover:bg-primary-fixed-dim text-on-primary py-4 rounded-lg font-headline-md text-[20px] uppercase tracking-wider transition-colors shadow-lg shadow-primary/30 mt-2">
+                        Track Live Status
+                    </button>
                 </div>
-                <button class="bg-surface-variant hover:bg-surface-bright border border-outline-variant text-on-surface px-6 rounded-md font-mono text-[14px] font-bold transition-colors">
-                    Track
+                
+                <!-- Station Search Content -->
+                <div id="content-station" class="hidden flex flex-col gap-6 relative">
+                    <div class="absolute left-6 top-10 bottom-24 w-0.5 bg-outline-variant/50 border-l border-dashed border-outline-variant z-0"></div>
+                    
+                    <div class="relative z-10 flex items-center gap-4">
+                        <div class="w-4 h-4 rounded-full border-[3px] border-primary bg-surface shadow-[0_0_10px_rgba(17,100,255,0.4)]"></div>
+                        <div class="flex-1">
+                            <label class="block font-mono text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">Initial Station</label>
+                            <input type="text" placeholder="e.g. New Delhi (NDLS)" class="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-lg shadow-inner text-[16px]">
+                        </div>
+                    </div>
+                    
+                    <button class="absolute right-4 top-[85px] z-20 w-10 h-10 bg-surface-variant border border-outline-variant rounded-full flex items-center justify-center text-on-surface hover:text-primary hover:border-primary transition-colors shadow-md">
+                        <span class="material-symbols-outlined text-[20px]">swap_vert</span>
+                    </button>
+                    
+                    <div class="relative z-10 flex items-center gap-4">
+                        <div class="w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_rgba(17,100,255,0.6)] flex items-center justify-center">
+                            <div class="w-1.5 h-1.5 bg-surface rounded-full"></div>
+                        </div>
+                        <div class="flex-1">
+                            <label class="block font-mono text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">Final Station</label>
+                            <input type="text" placeholder="e.g. Mumbai Central (MMCT)" class="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-lg shadow-inner text-[16px]">
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-primary hover:bg-primary-fixed-dim text-on-primary py-4 rounded-lg font-headline-md text-[20px] uppercase tracking-wider transition-colors shadow-lg shadow-primary/30 mt-2 flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">search</span>
+                        Find Trains
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access / Trending -->
+        <div class="max-w-2xl mx-auto w-full mt-4">
+            <h3 class="font-mono text-label-md text-on-surface-variant uppercase tracking-widest mb-4 pl-2">Trending Routes</h3>
+            <div class="flex flex-wrap gap-3">
+                <button class="bg-surface-container-high border border-outline-variant/50 hover:border-primary/50 text-on-surface px-4 py-2 rounded-full font-mono text-[12px] flex items-center gap-2 transition-colors">
+                    <span>NDLS</span> <span class="material-symbols-outlined text-[14px] text-on-surface-variant">arrow_forward</span> <span>MMCT</span>
+                </button>
+                <button class="bg-surface-container-high border border-outline-variant/50 hover:border-primary/50 text-on-surface px-4 py-2 rounded-full font-mono text-[12px] flex items-center gap-2 transition-colors">
+                    <span class="material-symbols-outlined text-[14px] text-primary">train</span> 12951 Mumbai Rajdhani
+                </button>
+                <button class="bg-surface-container-high border border-outline-variant/50 hover:border-primary/50 text-on-surface px-4 py-2 rounded-full font-mono text-[12px] flex items-center gap-2 transition-colors">
+                    <span class="material-symbols-outlined text-[14px] text-primary">train</span> 12004 Swarna Shatabdi
                 </button>
             </div>
         </div>
@@ -554,6 +586,25 @@
 </main>
 
 <script>
+    function switchSearchTab(tab) {
+        const tabTrain = document.getElementById('tab-train');
+        const tabStation = document.getElementById('tab-station');
+        const contentTrain = document.getElementById('content-train');
+        const contentStation = document.getElementById('content-station');
+
+        if (tab === 'train') {
+            tabTrain.className = "flex-1 py-4 font-headline-md text-[18px] text-primary border-b-2 border-primary uppercase tracking-wide bg-primary/5 transition-colors";
+            tabStation.className = "flex-1 py-4 font-headline-md text-[18px] text-on-surface-variant border-b-2 border-transparent uppercase tracking-wide hover:text-on-surface transition-colors";
+            contentTrain.classList.remove('hidden');
+            contentStation.classList.add('hidden');
+        } else {
+            tabStation.className = "flex-1 py-4 font-headline-md text-[18px] text-primary border-b-2 border-primary uppercase tracking-wide bg-primary/5 transition-colors";
+            tabTrain.className = "flex-1 py-4 font-headline-md text-[18px] text-on-surface-variant border-b-2 border-transparent uppercase tracking-wide hover:text-on-surface transition-colors";
+            contentStation.classList.remove('hidden');
+            contentTrain.classList.add('hidden');
+        }
+    }
+
     function toggleHome(show) {
         const searchView = document.getElementById('search-view');
         const mainView = document.getElementById('main-view');
@@ -607,11 +658,6 @@
 
 </div>
 
-    <button id="mode-toggle" onclick="toggleMode()" class="fixed top-4 right-4 z-[9999] bg-surface-container-high border border-outline-variant text-on-surface px-4 py-2 rounded-full shadow-xl font-mono text-label-md hover:bg-surface-variant transition-colors flex items-center gap-2">
-        <span class="material-symbols-outlined text-[18px]" id="mode-icon">phone_iphone</span>
-        <span id="mode-text">Mobile Mode</span>
-    </button>
-    
     <script>
         let isMobileMode = false;
         function toggleMode() {
